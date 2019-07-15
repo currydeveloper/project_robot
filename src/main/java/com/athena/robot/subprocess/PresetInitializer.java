@@ -2,7 +2,11 @@ package com.athena.robot.subprocess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class PresetInitializer {
@@ -13,18 +17,50 @@ public class PresetInitializer {
         log.debug("This is the source System "+os);
         log.trace("Asking for folder path");
         String folderPath=checkPathForFolder();
+        log.trace("Starting the folder creation at the path with today date");
+        String wallpaperFolderPath=createFolderPath(folderPath);
+        log.debug("New Folder has been Created at the location"+wallpaperFolderPath);
+    }
+
+    private String createFolderPath(String folderPath) {
+        log.trace("Starting the folder creation");
+        String wallPaperCreatePath=null;
+        try{
+            log.trace("Starting the try block");
+            if(null==folderPath||folderPath.isEmpty()) {
+                log.trace("Folder path is empty so calling the checkPathFolder for the method");
+                wallPaperCreatePath = checkPathForFolder();
+            }
+            Date date=new Date();
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("ddMMyyyy");
+            log.trace("Adding the wallpaper at the  end to generate new folder");
+            wallPaperCreatePath=folderPath+"\\Wallpapers_"+simpleDateFormat.format(date);
+            Path newPath=Paths.get(wallPaperCreatePath);
+            if(newPath.toFile().exists()){
+                log.debug("Folder is already Created");
+            }else{
+                log.trace("Creating the new folder for wallpapers");
+                Files.createDirectory(newPath);
+            }
+            log.trace("New Path"+wallPaperCreatePath);
+        }catch (Exception e){
+            log.error("error occurred in the wallpaper Folder creation"+e);
+        }
+        return wallPaperCreatePath;
     }
 
     private String checkPathForFolder() {
         Scanner scanner=new Scanner(System.in);
-        System.out.println("Enter the Location for the Folder :");
-        String path=scanner.next();
-        File file=new File(path);
-        if(!file.exists()||file.isFile()){
-            System.out.println("Please enter a path for directory");
+        log.debug("Enter the Location for the Folder :");
+        String path;
+        path = scanner.nextLine();
+        log.debug("path before"+path);
+        Path filePath= Paths.get(path);
+        if(!filePath.toFile().isDirectory()){
+            log.debug("Please enter a path for directory");
             checkPathForFolder();
         }else{
-            log.debug("Entered path is a directory"+file.isDirectory());
+            log.debug("Entered path is a directory"+filePath.toFile().isDirectory());
         }
         scanner.close();
         return path;
