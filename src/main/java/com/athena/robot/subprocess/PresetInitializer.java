@@ -12,24 +12,38 @@ import java.util.Scanner;
 public class PresetInitializer {
     private static final Logger log=LogManager.getLogger(PresetInitializer.class);
     public void initialize() {
+        Scanner scanner=new Scanner(System.in);
         log.trace("Starting the Initialize Process with the OS detection");
         String os=checkSourceSystem();
         log.debug("This is the source System "+os);
         log.trace("Asking for folder path");
-        String folderPath=checkPathForFolder();
+        String folderPath=checkPathForFolder(scanner);
         log.trace("Starting the folder creation at the path with today date");
-        String wallpaperFolderPath=createFolderPath(folderPath);
+        String wallpaperFolderPath=createFolderPath(scanner, folderPath);
         log.debug("New Folder has been Created at the location"+wallpaperFolderPath);
+        System.out.println("Enter the number of minutes we want to change wallpaper ");
+        int timeToChange=getTimeToChange(scanner);
+        System.out.println("Getting the value for Time as "+timeToChange);
+        scanner.close();
     }
 
-    private String createFolderPath(String folderPath) {
+    private int getTimeToChange(Scanner scanner) {
+        while(!scanner.hasNextInt()){
+            System.out.println("Please enter a Integer Value");
+            scanner.next();
+        }
+        int timeInput=scanner.nextInt();
+        return timeInput;
+    }
+
+    private String createFolderPath(Scanner scanner, String folderPath) {
         log.trace("Starting the folder creation");
         String wallPaperCreatePath=null;
         try{
             log.trace("Starting the try block");
             if(null==folderPath||folderPath.isEmpty()) {
                 log.trace("Folder path is empty so calling the checkPathFolder for the method");
-                wallPaperCreatePath = checkPathForFolder();
+                wallPaperCreatePath = checkPathForFolder(scanner);
             }
             Date date=new Date();
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("ddMMyyyy");
@@ -49,8 +63,8 @@ public class PresetInitializer {
         return wallPaperCreatePath;
     }
 
-    private String checkPathForFolder() {
-        Scanner scanner=new Scanner(System.in);
+    private String checkPathForFolder(Scanner scanner) {
+
         log.debug("Enter the Location for the Folder :");
         String path;
         path = scanner.nextLine();
@@ -58,11 +72,10 @@ public class PresetInitializer {
         Path filePath= Paths.get(path);
         if(!filePath.toFile().isDirectory()){
             log.debug("Please enter a path for directory");
-            checkPathForFolder();
-        }else{
-            log.debug("Entered path is a directory"+filePath.toFile().isDirectory());
+            checkPathForFolder(scanner);
+        }else {
+            log.debug("Entered path is a directory" + filePath.toFile().isDirectory());
         }
-        scanner.close();
         return path;
     }
 
