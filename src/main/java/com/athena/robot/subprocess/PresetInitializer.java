@@ -1,4 +1,5 @@
 package com.athena.robot.subprocess;
+import com.athena.robot.DownloadWallPapers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -6,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class PresetInitializer {
@@ -22,12 +25,52 @@ public class PresetInitializer {
         String wallpaperFolderPath=createFolderPath(scanner, folderPath);
         log.debug("New Folder has been Created at the location"+wallpaperFolderPath);
         System.out.println("Enter the number of minutes we want to change wallpaper ");
-        int timeToChange=getTimeToChange(scanner);
+        int timeToChange=getIntegerValCheck(scanner);
         System.out.println("Getting the value for Time as "+timeToChange);
+        System.out.println("How many Wallpapers do you want to download ??");
+        int wallpapersPerSub=getIntegerValCheck(scanner);
+        String duration=getProperDuration(scanner);
+        List<String> subRedditName=new ArrayList();
+        subRedditName.add("EarthPorn");
+        subRedditName.add("r/RoomPorn");
+        DownloadWallPapers dw=new DownloadWallPapers();
+        dw.downloadWallPapers(wallpapersPerSub,subRedditName,duration,wallpaperFolderPath);
         scanner.close();
     }
 
-    private int getTimeToChange(Scanner scanner) {
+    private String getProperDuration(Scanner scanner) {
+        System.out.println("How long back do you want to go\n" +
+                "\t\t\t1. all -- Get ALL Top WallPapers (default Value)\n" +
+                "\t\t\t2. month --- go back month\n" +
+                "\t\t\t3. year     -- go back year\n" +
+                "\t\t\t4. day --- go back day." +
+                "Enter the Number only:::");
+        int value=getIntegerValCheck(scanner);
+        String properDuration="all";
+        switch (value){
+            case 1:
+                properDuration="all";
+                break;
+            case 2:
+                properDuration="month";
+                break;
+            case 3:
+                properDuration="year";
+                break;
+            case 4:
+                properDuration="day";
+                break;
+            default:
+                System.out.println("Please enter propervalue");
+                getProperDuration(scanner);
+                break;
+        }
+
+
+        return properDuration;
+    }
+
+    private int getIntegerValCheck(Scanner scanner) {
         while(!scanner.hasNextInt()){
             System.out.println("Please enter a Integer Value");
             scanner.next();
@@ -65,7 +108,7 @@ public class PresetInitializer {
 
     private String checkPathForFolder(Scanner scanner) {
 
-        log.debug("Enter the Location for the Folder :");
+        System.out.println("Enter the Location for the Folder :");
         String path;
         path = scanner.nextLine();
         log.debug("path before"+path);
