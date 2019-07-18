@@ -1,4 +1,4 @@
-package com.athena.robot;
+package com.athena.robot.subprocess;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,9 +39,10 @@ public class DownloadWallPapers {
 
     private boolean buildConnectionToUrl(String redditTempUrl, String wallPaperFolderPath) {
         boolean isProcessSuccess=false;
+        HttpURLConnection redditTempConnection=null;
         try {
             URL redditTemporaryUrl=new URL(redditTempUrl);
-            HttpURLConnection redditTempConnection= (HttpURLConnection) redditTemporaryUrl.openConnection();
+             redditTempConnection= (HttpURLConnection) redditTemporaryUrl.openConnection();
             String redditUserAgent="project_robot 1.0 by /u/MisspelledPantheon";
             redditTempConnection.addRequestProperty("User-Agent",redditUserAgent);
             redditTempConnection.connect();
@@ -54,7 +55,10 @@ public class DownloadWallPapers {
             isProcessSuccess=true;
         }catch (Exception e){
             System.err.println("Error occured in building connection "+e);
+        }finally {
+            redditTempConnection.disconnect();
         }
+
         return isProcessSuccess;
     }
 

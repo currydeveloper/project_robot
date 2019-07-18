@@ -1,5 +1,4 @@
 package com.athena.robot.subprocess;
-import com.athena.robot.DownloadWallPapers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,11 +30,14 @@ public class PresetInitializer {
         int wallpapersPerSub=getIntegerValCheck(scanner);
         String duration=getProperDuration(scanner);
         List<String> subRedditName=new ArrayList();
+        //!FIXME change the following value to End User INput.
         subRedditName.add("EarthPorn");
         subRedditName.add("r/RoomPorn");
         DownloadWallPapers dw=new DownloadWallPapers();
         dw.downloadWallPapers(wallpapersPerSub,subRedditName,duration,wallpaperFolderPath);
+        //!TODO Add a new File Somewhere the Settings or log file is created.
         scanner.close();
+        //!TODO Add code for the setting the code for the folders.
     }
 
     private String getProperDuration(Scanner scanner) {
