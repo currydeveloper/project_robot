@@ -77,8 +77,7 @@ public class PresetInitializer {
             System.out.println("Please enter a Integer Value");
             scanner.next();
         }
-        int timeInput=scanner.nextInt();
-        return timeInput;
+        return scanner.nextInt();
     }
 
     private String createFolderPath(Scanner scanner, String folderPath) {
