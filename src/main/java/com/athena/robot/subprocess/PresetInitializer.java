@@ -29,15 +29,26 @@ public class PresetInitializer {
         System.out.println("How many Wallpapers do you want to download ??");
         int wallpapersPerSub=getIntegerValCheck(scanner);
         String duration=getProperDuration(scanner);
-        List<String> subRedditName=new ArrayList();
-        //!FIXME change the following value to End User INput.
-        subRedditName.add("EarthPorn");
-        subRedditName.add("r/RoomPorn");
+        List<String> subRedditName=gatherSubReddit(scanner);
         DownloadWallPapers dw=new DownloadWallPapers();
         dw.downloadWallPapers(wallpapersPerSub,subRedditName,duration,wallpaperFolderPath);
         //!TODO Add a new File Somewhere the Settings or log file is created.
         scanner.close();
         //!TODO Add code for the setting the code for the folders.
+    }
+
+    private List<String> gatherSubReddit(Scanner scanner) {
+        List<String> subredditList=new ArrayList<>();
+        subredditList.add("EarthPorn");
+        subredditList.add("r/RoomPorn");
+        //FIXME fix the following code to add continous input from the users for array values.
+//        //Adding default subreddits
+//        System.out.println("Enter the subreddit you want to gather pics with either with r/ or just name, without / at end ");
+//        String valueToAdd=scanner.nextLine();
+//        while (scanner.hasNextLine()){
+//            subredditList.add(valueToAdd);
+//        }
+        return subredditList;
     }
 
     private String getProperDuration(Scanner scanner) {
