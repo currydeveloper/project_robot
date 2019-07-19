@@ -49,6 +49,7 @@ public class DownloadWallPapers {
             InputStreamReader urlStream=new InputStreamReader((InputStream)redditTempConnection.getContent());
             JSONParser jsonParser=new JSONParser();
             JSONObject redditTempDataObject=(JSONObject) jsonParser.parse(urlStream);
+            //TODO Add a condition to check the number of url obtained matches to request and fix it.
             JSONObject cleanedURLJsonObject=CleanJsonData(redditTempDataObject);
             //The below method will use the folder and download the images there.
             downloadImagesToFolder(cleanedURLJsonObject,wallPaperFolderPath);

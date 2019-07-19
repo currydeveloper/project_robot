@@ -30,6 +30,7 @@ public class PresetInitializer {
         int wallpapersPerSub=getIntegerValCheck(scanner);
         String duration=getProperDuration(scanner);
         List<String> subRedditName=gatherSubReddit(scanner);
+        System.out.println("List of Sub Reddit Gathered is "+subRedditName.toString().trim());
         DownloadWallPapers dw=new DownloadWallPapers();
         dw.downloadWallPapers(wallpapersPerSub,subRedditName,duration,wallpaperFolderPath);
         //!TODO Add a new File Somewhere the Settings or log file is created.
@@ -41,13 +42,17 @@ public class PresetInitializer {
         List<String> subredditList=new ArrayList<>();
         subredditList.add("EarthPorn");
         subredditList.add("r/RoomPorn");
-        //FIXME fix the following code to add continous input from the users for array values.
-//        //Adding default subreddits
-//        System.out.println("Enter the subreddit you want to gather pics with either with r/ or just name, without / at end ");
-//        String valueToAdd=scanner.nextLine();
-//        while (scanner.hasNextLine()){
-//            subredditList.add(valueToAdd);
-//        }
+        while (true){
+            System.out.println("Enter the sub reddit you want to add, remove / at the end" +
+                    "\t enter exit to be done." +
+                    "\t Just name or with r/EarthPorn is also fine::\n");
+            String tempValToAdd=scanner.nextLine();
+            if(tempValToAdd.equalsIgnoreCase("Exit")){
+                break;
+            }else if(tempValToAdd!=null&&!tempValToAdd.isEmpty()){
+                subredditList.add(tempValToAdd);
+            }
+        }
         return subredditList;
     }
 
