@@ -23,7 +23,7 @@ public class PresetInitializer {
         log.trace("Starting the folder creation at the path with today date");
         String wallpaperFolderPath=createFolderPath(scanner, folderPath);
         log.debug("New Folder has been Created at the location"+wallpaperFolderPath);
-        System.out.println("Enter the number of minutes we want to change wallpaper ");
+        System.out.println("Enter the duration between wallpaper changes in minutes ::\n");
         int timeToChange=getIntegerValCheck(scanner);
         System.out.println("Getting the value for Time as "+timeToChange);
         System.out.println("How many Wallpapers do you want to download ??");
@@ -35,7 +35,9 @@ public class PresetInitializer {
         dw.downloadWallPapers(wallpapersPerSub,subRedditName,duration,wallpaperFolderPath);
         //!TODO Add a new File Somewhere the Settings or log file is created.
         scanner.close();
-        //!TODO Add code for the setting the code for the folders.
+        //!TODO Change the default method to accept time duration and maybe read the image dimensions and set it.
+        SetDesktopImage t=new SetDesktopImage();
+        t.showWallpapers(wallpaperFolderPath, timeToChange);
     }
 
     private List<String> gatherSubReddit(Scanner scanner) {
