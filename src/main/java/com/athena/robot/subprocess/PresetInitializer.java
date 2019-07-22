@@ -42,8 +42,8 @@ public class PresetInitializer {
 
     private List<String> gatherSubReddit(Scanner scanner) {
         List<String> subredditList=new ArrayList<>();
-        subredditList.add("EarthPorn");
-        subredditList.add("r/RoomPorn");
+        subredditList.add("wallpaper");
+        subredditList.add("r/wallpapers");
         while (true){
             System.out.println("Enter the sub reddit you want to add, remove / at the end" +
                     "\t enter exit to be done." +
